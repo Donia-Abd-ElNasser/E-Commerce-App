@@ -1,3 +1,4 @@
+import 'package:ecommerce/core/constants.dart';
 import 'package:ecommerce/core/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -15,8 +16,11 @@ class EcommerceApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: AppRoutes.getRouter(),
       theme: ThemeData.light().copyWith(
+        scaffoldBackgroundColor:kPrimaryColor ,
         textTheme: ThemeData.light().textTheme.apply(
-           fontFamily: 'kGtsectrafont',
+           fontFamily: kGtsectrafont,
+           displayColor: kButtonColor,
+           bodyColor: kButtonColor
         ),
       )
        );

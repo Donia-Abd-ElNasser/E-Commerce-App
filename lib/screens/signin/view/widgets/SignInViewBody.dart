@@ -1,62 +1,90 @@
-import 'package:ecommerce/screens/signin/view/widgets/custom_text_field.dart';
+import 'package:ecommerce/core/constants.dart';
+import 'package:ecommerce/core/routes.dart';
+import 'package:ecommerce/screens/signup/view/widgets/custom_textForm.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SignInViewBody extends StatelessWidget {
-   SignInViewBody({super.key});
- final TextEditingController emailController = TextEditingController();
+  SignInViewBody({super.key});
+
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
-      appBar: AppBar(
-        title: const Text("Sign In"),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFC4E703),
-        elevation: 0,
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
         child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Column(
+           mainAxisSize: MainAxisSize.min,
+            // mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30),
-              buildTextField(
-                label: "Email",
+             const SizedBox(height:190),
+             
+              const Text(
+                "Welcome Back!",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: kButtonColor,
+                ),
+              ),
+              const SizedBox(height: 5),
+              const Text(
+                "Sign in to continue shopping.",
+                style: TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(height: 40),
+
+              // Email field
+              CustomFormTextField(
+                text: 'Email',
                 controller: emailController,
+                icon: const Icon(Icons.email_outlined),
               ),
-              const SizedBox(height: 20),
-              buildTextField(
-                label: "Password",
+              const SizedBox(height: 15),
+
+              // Password field
+              CustomFormTextField(
+                text: 'Password',
                 controller: passwordController,
-                isPassword: true,
+                icon: const Icon(Icons.lock_outline),
+                obscureText: true,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
+
+              // Sign in button
               SizedBox(
                 width: double.infinity,
-                height: 50,
                 child: ElevatedButton(
+                  
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFC4E703),
+                    foregroundColor: kButtonColor,
+                    backgroundColor: kButtonColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(25),
                     ),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
                   onPressed: () {
-                    
+                    GoRouter.of(context).push(AppRoutes.kHomeView);
                   },
                   child: const Text(
                     "Sign In",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               ),
+             
+
+             
             ],
           ),
         ),
       ),
     );
-  }}
+  }
+}
