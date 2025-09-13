@@ -1,22 +1,32 @@
 import 'package:dio/dio.dart';
-import 'package:ecommerce/screens/product_details/model/product_model.dart';
+import 'package:ecommerce/core/failure.dart';
 
-
-class ProductService {
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: "https://ecommerce.routemisr.com/api/v1/",
-      connectTimeout: Duration(seconds: 10),
-      receiveTimeout: Duration(seconds: 10),
-    ),
-  );
-
-  Future<ProductModel> getProductDetails(String id) async {
+class ApiServices {
+  final Dio _dio;
+  static const String baseUrl = 'https://ecommerce.routemisr.com/api/v1/';
+  ApiServices()
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: baseUrl,
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+          headers: {"Content-Type": "application/json"},
+        ),
+      );
+  Future<dynamic> get({required String endPoint}) async {
     try {
-      final response = await _dio.get("products/$id");
-      return ProductModel.fromJson(response.data['data']);
+      final response = await _dio.get(endPoint);
+      return response.data;
     } on DioException catch (e) {
-      throw Exception(e.response?.data['message'] ?? "Failed to load product");
+      ServerFailure.fromDioError(e);
+    }
+  }
+  Future<dynamic> post({required String endPoint,required Map<String,dynamic>data}) async {
+    try {
+      final response = await _dio.post(endPoint,data: data);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      ServerFailure.fromDioError(e);
     }
   }
 }

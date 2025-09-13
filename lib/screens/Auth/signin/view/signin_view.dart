@@ -1,5 +1,5 @@
 
-import 'package:ecommerce/screens/signin/view/widgets/SignInViewBody.dart';
+import 'package:ecommerce/screens/Auth/signin/view/widgets/SignInViewBody.dart';
 import 'package:flutter/material.dart';
 
 class SignInView extends StatelessWidget {

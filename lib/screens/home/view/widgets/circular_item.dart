@@ -5,19 +5,31 @@ class CircularItem extends StatelessWidget {
   const CircularItem({super.key});
 
   @override
+
   Widget build(BuildContext context) {
-    return Container(
-    //  width: 100,
-    margin: EdgeInsets.only(right: 4,),
-    padding: EdgeInsets.all(10),
-      height: 40,
-      decoration: BoxDecoration(
-        color:kButtonColor,
-        borderRadius: BorderRadius.circular(25),
+    return Padding(
+      padding: const EdgeInsets.only(left: 5.0),
+      child: Column(
+       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+        width: 100,
+      margin: EdgeInsets.only(right: 4,),
+      padding: EdgeInsets.all(10),
+        height: 70,
+        decoration: BoxDecoration(
+          color:kButtonColor,
+          borderRadius: BorderRadius.circular(100),
+        image:DecorationImage(image:AssetImage('assets/images/profile.jpg',),fit: BoxFit.cover, )   
+        ),
         
       ),
-      child: Center(child: Text('mussicccccccccc',style: TextStyle(fontSize: 16,color: kPrimaryColor))),
+      SizedBox(height: 10,),
+        Expanded(child: Center(child: Text('mussiccccc',style: TextStyle(fontSize: 18,color: kButtonColor))))
+      ],
+      ),
     );
 
   }
 }
+

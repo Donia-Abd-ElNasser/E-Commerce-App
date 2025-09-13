@@ -1,30 +1,44 @@
 import 'package:ecommerce/screens/home/view/widgets/circular_item.dart';
+import 'package:ecommerce/screens/home/view_model/cubit/home_cubit.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoriesList extends StatelessWidget {
   const CategoriesList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: SizedBox(
-        height: 50,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 10,
-          
-          itemBuilder: (context,index){
-          
-          return GestureDetector(
-            onTap: (){},
-            child: CircularItem());
-        
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+
+        if(state is HomeCategoriesSuccess){
+          print('===========>categoriessuccess');
+          return Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 10,
+
+              itemBuilder: (context, index) {
+                return GestureDetector(onTap: () {}, child: CircularItem());
+              },
+            ),
+          ),
+        );
+        }else if (state is HomeCategoriesLoading){
+          return Center(child: CircularProgressIndicator(),);
         }
-        ),
-      ),
-    )
-    ;
+        else if (state is HomeCategoriesFailure){
+          return Text(state.errMessage);
+        }
+        else {
+          return Text('data');
+        }
+        
+      },
+    );
   }
 }
-

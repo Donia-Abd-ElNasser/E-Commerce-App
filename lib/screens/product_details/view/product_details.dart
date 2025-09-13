@@ -192,7 +192,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ),
                               ),
                               child: const Text(
-                                "Add to basket",
+                                "Add to Cart",
                                 style: TextStyle(color: Colors.white, fontSize: 16),
                               ),
                             ),

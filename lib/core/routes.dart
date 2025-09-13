@@ -2,14 +2,12 @@ import 'package:ecommerce/screens/cart/view/cart_view.dart';
 import 'package:ecommerce/screens/checkout/views/checkout_view.dart';
 import 'package:ecommerce/screens/favourite/view/favourite_view.dart';
 import 'package:ecommerce/screens/home/view/home_view.dart';
-import 'package:ecommerce/screens/payement/view/payement_view.dart';
-
 import 'package:ecommerce/screens/product_details/view/product_details.dart';
 import 'package:ecommerce/screens/product_details/view_model/product_cubit/product_cubit.dart';
 import 'package:ecommerce/screens/profile/view/profile_view.dart';
 import 'package:ecommerce/screens/shipping/views/shipping_view.dart';
-import 'package:ecommerce/screens/signin/view/signin_view.dart';
-import 'package:ecommerce/screens/signup/view/signup_view.dart';
+import 'package:ecommerce/screens/Auth/signin/view/signin_view.dart';
+import 'package:ecommerce/screens/Auth/signup/view/signup_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,12 +25,12 @@ abstract class AppRoutes {
   static GoRouter getRouter() {
     return GoRouter(
       routes: [
-        GoRoute(path: '/', builder: (context, state) => const SignUpView()),
+        GoRoute(path: '/rrr', builder: (context, state) => const SignUpView()),
         GoRoute(
-          path: kSigninView,
+          path: '/rrrrr',
           builder: (context, state) => const SignInView(),
         ),
-        GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
+        GoRoute(path: '/', builder: (context, state) => const HomeView()),
         GoRoute(
           path: kShippingView,
           builder: (context, state) => const ShippingView(),
@@ -64,8 +62,6 @@ abstract class AppRoutes {
               child: ProductDetailsPage(productId: '6428de2adc1175abc65ca05b'),
             );
           },
-
-          
         ),
       ],
     );
