@@ -1,5 +1,8 @@
 import 'package:ecommerce/core/constants.dart';
+import 'package:ecommerce/screens/shipping/view_model/cubit/shipping_cubit.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ShippingViewBody extends StatelessWidget {
@@ -8,36 +11,78 @@ class ShippingViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
+    //final cubit = BlocProvider.of<ShippingCubit>(context);
+    final state = BlocProvider.of<ShippingCubit>(context).state;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(20),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
+    final nameController = TextEditingController(text: state.name);
+    final addressController = TextEditingController(text: state.address);
+    final cityController = TextEditingController(text: state.city);
+    final stateController = TextEditingController(text: state.state);
+    //final zipController = TextEditingController(text: state.zip);
+    final phoneController = TextEditingController(text: state.phone);
+
+    return BlocProvider(
+      create: (context) => ShippingCubit(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          title: const Text(
+            "Edit Shipping Address",
+            style: TextStyle(color: kButtonColor),
+          ),
+          iconTheme: const IconThemeData(color: kButtonColor),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: formKey,
+            child: ListView(
               children: [
-                CircleAvatar(
-                  backgroundColor: kButtonColor,
-                  child: IconButton(
-                    icon: Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                    onPressed: () => GoRouter.of(context).pop(),
-                  ),
+                TextFormField(
+                  controller: nameController,
+                  decoration: _inputDecoration("Full Name"),
                 ),
-                SizedBox(width: 50),
-                Text(
-                  'Add Shipping Address',
-                  style: TextStyle(
-                    color: kButtonColor,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: addressController,
+                  decoration: _inputDecoration("Address"),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: cityController,
+                  decoration: _inputDecoration("City"),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: stateController,
+                  decoration: _inputDecoration("State"),
+                ),
+               
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: phoneController,
+                  decoration: _inputDecoration("Phone Number"),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kButtonColor,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<ShippingCubit>(context).updateShipping(
+                      name: nameController.text,
+                      address: addressController.text,
+                      city: cityController.text,
+                      stateValue: stateController.text,
+                     
+                      phone: phoneController.text,
+                    );
+                    GoRouter.of(context).pop();
+                  },
+                  child: const Text(
+                    "Save Changes",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],
@@ -45,177 +90,20 @@ class ShippingViewBody extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: formKey,
-          child: ListView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            children: [
-              SizedBox(height: 15),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      cursorColor: kButtonColor,
-                      decoration: InputDecoration(
-                        labelText: "First name",
-                        labelStyle: TextStyle(color: kButtonColor),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: kButtonColor,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextFormField(
-                      cursorColor: kButtonColor,
-                      decoration: InputDecoration(
-                        labelText: "Last name",
-                        labelStyle: TextStyle(color: kButtonColor),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: kButtonColor,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                cursorColor: kButtonColor,
-                decoration: InputDecoration(
-                  labelText: "Address",
-                  labelStyle: TextStyle(color: kButtonColor),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: kButtonColor, width: 2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                cursorColor: kButtonColor,
-                decoration: InputDecoration(
-                  labelText: "City",
-                  labelStyle: TextStyle(color: kButtonColor),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: kButtonColor, width: 2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      cursorColor: kButtonColor,
-                      decoration: InputDecoration(
-                        labelText: "State",
-                        labelStyle: TextStyle(color: kButtonColor),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: kButtonColor,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextFormField(
-                      cursorColor: kButtonColor,
-                      decoration: InputDecoration(
-                        labelText: "ZIP code",
-                        labelStyle: TextStyle(color: kButtonColor),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: kButtonColor,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                cursorColor: kButtonColor,
-                decoration: InputDecoration(
-                  labelText: "Phone number",
-                  labelStyle: TextStyle(color: kButtonColor),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: kButtonColor, width: 2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 280),
+    );
+  }
 
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kButtonColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                  ),
-                  onPressed: () {
-                    GoRouter.of(context).pop();
-                  },
-                  child: const Text(
-                    "Add Address",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+  InputDecoration _inputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: kButtonColor),
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: kButtonColor, width: 2),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.grey),
+        borderRadius: BorderRadius.circular(12),
       ),
     );
   }

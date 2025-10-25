@@ -4,36 +4,20 @@ abstract class HomeState {}
 
 final class HomeInitial extends HomeState {}
 final class HomeLoading extends HomeState {}
-
-final class HomeBrandsFailure extends HomeState {
+final class HomeFailure extends HomeState {
   final String errMessage;
 
-  HomeBrandsFailure({required this.errMessage});
+  HomeFailure({required this.errMessage});
 }
-final class HomeAllProductsFailure extends HomeState {
-  final String errMessage;
 
-  HomeAllProductsFailure({required this.errMessage});
-}
-final class HomeCategoriesFailure extends HomeState {
-  final String errMessage;
-
-  HomeCategoriesFailure({required this.errMessage});
-}
-class HomeCategoriesSuccess extends HomeState {
+class HomeSuccess extends HomeState {
   final List<ItemModel> categories;
-  HomeCategoriesSuccess({required this.categories});
-}
-
-class HomeBrandsSuccess extends HomeState {
   final List<ItemModel> brands;
-  HomeBrandsSuccess({required this.brands});
-}
-
-class HomeProductsSuccess extends HomeState {
   final List<ProductModel> products;
-  HomeProductsSuccess({required this.products});
+
+  HomeSuccess({
+    required this.categories,
+    required this.brands,
+    required this.products,
+  });
 }
-final class HomeBrandsLoading extends HomeState {}
-final class HomeCategoriesLoading extends HomeState {}
-final class HomeAllProductLoading extends HomeState {}

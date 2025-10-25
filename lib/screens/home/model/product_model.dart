@@ -20,21 +20,24 @@ class ProductModel {
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
-    return ProductModel(
-      id: json["_id"],
-      title: json["title"],
-      description: json["description"] ?? "",
-      imageCover: json["imageCover"],
-      price:
-          (json["price"] is int)
-              ? (json["price"] as int).toDouble()
-              : json["price"],
-      images: json["images"] ?? [],
-      categoryName: json['category']['name']??'',
-      rating: (json['ratingsAverage'] is int)
-    ? (json['ratingsAverage'] as int).toDouble()
-    : (json['ratingsAverage'] as double),
+  return ProductModel(
+    id: json["_id"] ?? '',
+    title: json["title"] ?? '',
+    description: json["description"] ?? "",
+    imageCover: json["imageCover"] ?? '',
+    price: (json["price"] is num) ? (json["price"] as num).toDouble() : 0.0,
+    images: json["images"] ?? [],
+    categoryName: json['category']?['name'] ?? '',
+    rating: (json['ratingsAverage'] is num)
+        ? (json['ratingsAverage'] as num).toDouble()
+        : 0.0,
+  );
+}Map<String, dynamic> toJson() => {
+  "id": id,
+  "title": title,
+  "description": description,
+  "imageCover": imageCover,
+  "price": price,
+};
 
-    );
-  }
 }

@@ -1,26 +1,25 @@
+import 'package:ecommerce/core/utills/services.dart';
+import 'package:ecommerce/screens/home/model/product_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dio/dio.dart';
+
 import 'product_state.dart';
-import '../../model/product_model.dart';
 
 class ProductCubit extends Cubit<ProductState> {
-  ProductCubit() : super(ProductInitial());
+  ProductCubit(this.apiServices) : super(ProductInitialState());
 
-  final Dio _dio = Dio();
+  final ApiServices apiServices;
 
-  Future<void> fetchProductDetails(String productId) async {
-    emit(ProductLoading());
+  Future<void> fetchProductDetails({required String productId}) async {
+    emit(ProductLoadingState());
     try {
-      final response = await _dio.get(
-        "https://ecommerce.routemisr.com/api/v1/products/$productId",
-      );
+      final response = await apiServices.get(endPoint: 'products/$productId');
 
-      final data = response.data["data"];
+      final data = response["data"];
       final product = ProductModel.fromJson(data);
 
-      emit(ProductLoaded(product));
+      emit(ProductSuccessState(product));
     } catch (e) {
-      emit(ProductError(e.toString()));
+      emit(ProductFailureState(e.toString()));
     }
   }
 }

@@ -11,33 +11,28 @@ class CategoriesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-
-        if(state is HomeCategoriesSuccess){
-          print('===========>categoriessuccess');
+        if (state is HomeSuccess) {
+          print('===========> categoriessuccess');
           return Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: SizedBox(
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-
-              itemBuilder: (context, index) {
-                return GestureDetector(onTap: () {}, child: CircularItem());
-              },
+            padding: const EdgeInsets.only(left: 8),
+            child: SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: state.categories.length,
+                itemBuilder: (context, index) {
+                  return CircularItem( itemModel: state.categories[index]);
+                },
+              ),
             ),
-          ),
-        );
-        }else if (state is HomeCategoriesLoading){
-          return Center(child: CircularProgressIndicator(),);
-        }
-        else if (state is HomeCategoriesFailure){
+          );
+        } else if (state is HomeLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is HomeFailure) {
           return Text(state.errMessage);
+        } else {
+          return const SizedBox.shrink();
         }
-        else {
-          return Text('data');
-        }
-        
       },
     );
   }

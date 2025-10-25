@@ -28,7 +28,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(ApiServices())..fetchAllCategories()..fetchAllBrands()..fetchAllProducts(),
+      create: (context) => HomeCubit(ApiServices())..fetchHomeData(),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: kPrimaryColor,
@@ -60,7 +60,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                             ),
                           ),
                       options: CarouselOptions(
-                        autoPlay: false,
+                        autoPlay: true,
                         height: 150,
                         aspectRatio: 1,
                         viewportFraction: 0.67,

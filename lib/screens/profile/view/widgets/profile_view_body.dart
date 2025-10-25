@@ -1,13 +1,16 @@
 import 'package:ecommerce/core/constants.dart';
+import 'package:ecommerce/core/routes.dart';
+import 'package:ecommerce/core/shared_preference.dart';
 import 'package:ecommerce/screens/profile/view/widgets/profile_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({super.key});
 
-  Future<void> _signOut(BuildContext context) async {
-    // await CacheHelper.removeData(key: 'token');
-    // GoRouter.of(context).go(AppRoutes.kOnboardingView);
+  Future<void> _signOut( context) async {
+    await CacheHelper.removeData(key: 'token');
+     GoRouter.of(context).go(AppRoutes.kSignupView);
   }
 
   @override
@@ -33,13 +36,13 @@ class ProfileViewBody extends StatelessWidget {
                 radius: 50,
                 backgroundColor: Colors.grey,
                 child: Text(
-                  'D', 
+                  'U', 
                   style: TextStyle(fontSize: 40, color: Colors.white),
                 ),
               ),
               const SizedBox(height: 10),
               const Text(
-                'Donia',
+                'User',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
         

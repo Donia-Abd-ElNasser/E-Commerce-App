@@ -1,16 +1,15 @@
 import 'package:ecommerce/core/constants.dart';
+import 'package:ecommerce/screens/cart/view_model/cart_cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Counter extends StatefulWidget {
-  const Counter({super.key});
-
-  @override
-  State<Counter> createState() => _CounterState();
-}
-
-class _CounterState extends State<Counter> {
+class Counter extends StatelessWidget {
+   Counter({super.key, required this.id, required this.quantity});
+final String id;
+final int quantity;
   int counter = 1;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,17 +27,17 @@ class _CounterState extends State<Counter> {
               color: kButtonColor,
              // disabledColor: kButtonColor,
               onPressed: () {
-                setState(() {
-                  if (counter > 1) {
-                    counter--;
-                  }
-                });
+               
+                 
+                    BlocProvider.of<CartCubit>(context).decreaseQuantity(id);
+                  
+               
               },
               icon: Icon(FontAwesomeIcons.minus,size: 15,)
             ),
            SizedBox(width: 8,),
             Text(
-              counter.toString(),
+              quantity.toString(),
               style: TextStyle(
                 color: kButtonColor,
                 fontSize: 20,
@@ -50,9 +49,10 @@ class _CounterState extends State<Counter> {
             color: kButtonColor,
             hoverColor: kButtonColor,
               onPressed: () {
-                setState(() {
-                  counter++;
-                });
+              
+                  
+                 BlocProvider.of<CartCubit>(context).increaseQuantity(id);
+               
               },
               icon: Icon(FontAwesomeIcons.plus,size: 15,)
             ),
@@ -61,72 +61,3 @@ class _CounterState extends State<Counter> {
     );
   }}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// }Card(
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(200)),
-//       color: Colors.grey[200],
-//       child: Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//         child: Row(
-//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             GestureDetector(
-//               onTap: () {
-//                 setState(() {
-//                   if (counter > 1) {
-//                     counter--;
-//                   }
-//                 });
-//               },
-//               child: Text(
-//                 '-',
-//                 style: TextStyle(
-//                   color: kButtonColor,
-//                   fontSize: 18,
-                 
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//             ),
-//            SizedBox(width: 8,),
-//             Text(
-//               counter.toString(),
-//               style: TextStyle(
-//                 color: kButtonColor,
-//                 fontSize: 20,
-        
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),  SizedBox(width: 8,),
-//             GestureDetector(
-//               onTap: () {
-//                 setState(() {
-//                   counter++;
-//                 });
-//               },
-//               child: Text(
-//                 '+',
-//                 style: TextStyle(
-//                   color: kButtonColor,
-//                   fontSize: 18,
-               
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );

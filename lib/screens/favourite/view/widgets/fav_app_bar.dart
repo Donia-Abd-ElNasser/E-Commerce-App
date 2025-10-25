@@ -24,9 +24,9 @@ class FavAppBar extends StatelessWidget {
                         ),
                       ),
               CircleAvatar(
-        backgroundColor: kButtonColor,
+        backgroundColor: kPrimaryColor,
         radius: 20,
-        child: Icon(FontAwesomeIcons.solidHeart,color: kPrimaryColor,size: 20,)
+        child: Icon(FontAwesomeIcons.solidHeart,color: Colors.red,size: 20,)
           
     
       )

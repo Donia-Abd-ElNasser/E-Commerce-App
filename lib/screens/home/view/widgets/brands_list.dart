@@ -9,37 +9,31 @@ class BrandsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-
-        if(state is HomeBrandsSuccess){
-           print('===========>brandssuccess');
+        if (state is HomeSuccess) {
+          print('===========> brandssuccess');
           return Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: SizedBox(
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-
-              itemBuilder: (context, index) {
-                return GestureDetector(onTap: () {}, child: CircularItem());
-              },
+            padding: const EdgeInsets.only(left: 8),
+            child: SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: state.brands.length,
+                itemBuilder: (context, index) {
+                  return CircularItem(itemModel: state.brands[index]);
+                },
+              ),
             ),
-          ),
-        );
-        }else if (state is HomeBrandsLoading){
-          return Center(child: CircularProgressIndicator(),);
-        }else if (state is HomeBrandsFailure){
+          );
+        } else if (state is HomeLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is HomeFailure) {
           return Text(state.errMessage);
+        } else {
+          return const SizedBox.shrink();
         }
-        
-        else {
-          return Text('data');
-        }
-        
       },
     );
-
   }
 }

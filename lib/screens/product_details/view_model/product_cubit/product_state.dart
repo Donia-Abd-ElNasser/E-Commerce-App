@@ -1,28 +1,21 @@
-import 'package:ecommerce/screens/product_details/model/product_model.dart';
-import 'package:equatable/equatable.dart';
+import 'package:ecommerce/screens/home/model/product_model.dart';
 
 
-abstract class ProductState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+abstract class ProductState {}
 
-class ProductInitial extends ProductState {}
+class ProductInitialState extends ProductState {}
 
-class ProductLoading extends ProductState {}
+class ProductLoadingState extends ProductState {}
 
-class ProductLoaded extends ProductState {
+class ProductSuccessState extends ProductState {
   final ProductModel product;
-  ProductLoaded(this.product);
+  ProductSuccessState(this.product);
 
-  @override
-  List<Object?> get props => [product];
+
 }
 
-class ProductError extends ProductState {
+class ProductFailureState extends ProductState {
   final String message;
-  ProductError(this.message);
+  ProductFailureState(this.message);
 
-  @override
-  List<Object?> get props => [message];
 }

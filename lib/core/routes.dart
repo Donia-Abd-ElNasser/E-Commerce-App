@@ -1,14 +1,16 @@
 import 'package:ecommerce/screens/cart/view/cart_view.dart';
+import 'package:ecommerce/screens/cart/view_model/cart_cubit/cart_cubit.dart';
 import 'package:ecommerce/screens/checkout/views/checkout_view.dart';
 import 'package:ecommerce/screens/favourite/view/favourite_view.dart';
 import 'package:ecommerce/screens/home/view/home_view.dart';
-import 'package:ecommerce/screens/product_details/view/product_details.dart';
-import 'package:ecommerce/screens/product_details/view_model/product_cubit/product_cubit.dart';
+
 import 'package:ecommerce/screens/profile/view/profile_view.dart';
+import 'package:ecommerce/screens/shipping/view_model/cubit/shipping_cubit.dart';
 import 'package:ecommerce/screens/shipping/views/shipping_view.dart';
 import 'package:ecommerce/screens/Auth/signin/view/signin_view.dart';
 import 'package:ecommerce/screens/Auth/signup/view/signup_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:go_router/go_router.dart';
 
 abstract class AppRoutes {
@@ -22,18 +24,25 @@ abstract class AppRoutes {
   static const kProductDetailsView = '/ProductDetailsView';
   static const kCheckout = '/Checkout';
   static const kShippingView = '/ShippingView';
-  static GoRouter getRouter() {
+  static GoRouter getRouter({required bool isLoggedIn}) {
     return GoRouter(
+      initialLocation: isLoggedIn ? kHomeView : '/',
       routes: [
-        GoRoute(path: '/rrr', builder: (context, state) => const SignUpView()),
+        GoRoute(path: '/', builder: (context, state) => const SignUpView()),
         GoRoute(
-          path: '/rrrrr',
+          path: kSigninView,
           builder: (context, state) => const SignInView(),
         ),
-        GoRoute(path: '/', builder: (context, state) => const HomeView()),
+        GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
         GoRoute(
-          path: kShippingView,
-          builder: (context, state) => const ShippingView(),
+          path: AppRoutes.kShippingView,
+          builder: (context, state) {
+            final shippingCubit = state.extra as ShippingCubit;
+            return BlocProvider.value(
+              value: shippingCubit,
+              child: const ShippingView(),
+            );
+          },
         ),
 
         GoRoute(
@@ -41,27 +50,16 @@ abstract class AppRoutes {
           builder: (context, state) => const FavouriteView(),
         ),
         GoRoute(path: kCartView, builder: (context, state) => const CartView()),
-        GoRoute(path: kCheckout, builder: (context, state) => const Checkout()),
+        GoRoute(
+          path: kCheckout,
+          builder: (context, state) {
+            final cartCubit = state.extra as CartCubit;
+            return Checkout(cartCubit: cartCubit);
+          },
+        ),
         GoRoute(
           path: kProfileView,
           builder: (context, state) => const ProfileView(),
-        ),
-        // GoRoute(
-        //   path: '/',
-        //   builder: (context, state) => const PayementView(),
-        // ),
-        GoRoute(
-          path: kProductDetailsView,
-          builder: (context, state) {
-            final String id = state.extra != null ? state.extra as String : '';
-            return BlocProvider(
-              create:
-                  (_) =>
-                      ProductCubit()
-                        ..fetchProductDetails('6428de2adc1175abc65ca05b'),
-              child: ProductDetailsPage(productId: '6428de2adc1175abc65ca05b'),
-            );
-          },
         ),
       ],
     );
