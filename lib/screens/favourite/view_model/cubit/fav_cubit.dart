@@ -11,21 +11,27 @@ class FavCubit extends Cubit<FavState> {
   }
 
   List<ProductModel> favouriteProducts = [];
+  late SharedPreferences prefs;
 
   Future<void> loadFavourites() async {
-    final prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     final favData = prefs.getStringList('favourites') ?? [];
 
-    favouriteProducts = favData.map((item) {
-      return ProductModel.fromJson(jsonDecode(item));
-    }).toList();
+    try {
+      favouriteProducts = favData.map((item) {
+        final Map<String, dynamic> jsonMap = jsonDecode(item);
+        return ProductModel.fromJson(jsonMap);
+      }).toList();
+    } catch (e) {
+     
+      favouriteProducts = [];
+      await prefs.remove('favourites');
+    }
 
     emit(FavSuccess(List.from(favouriteProducts)));
   }
 
   Future<void> toggleFavourite(ProductModel product) async {
-    final prefs = await SharedPreferences.getInstance();
-
     final index = favouriteProducts.indexWhere((p) => p.id == product.id);
 
     if (index != -1) {
@@ -34,8 +40,11 @@ class FavCubit extends Cubit<FavState> {
       favouriteProducts.add(product);
     }
 
-    final favData = favouriteProducts.map((p) => jsonEncode(p.toJson())).toList();
-    await prefs.setStringList('favourites', favData);
+    final favData = favouriteProducts
+        .map((p) => jsonEncode(p.toJson()))
+        .toList();
+
+    await prefs.setStringList("favourites", favData);
 
     emit(FavSuccess(List.from(favouriteProducts)));
   }
@@ -43,4 +52,6 @@ class FavCubit extends Cubit<FavState> {
   bool isFavourite(String id) {
     return favouriteProducts.any((p) => p.id == id);
   }
+
+  int get count => favouriteProducts.length;
 }

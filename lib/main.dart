@@ -20,7 +20,7 @@ void main() async {
       providers: [
         BlocProvider(create: (context) => AuthCubit(ApiServices())),
         BlocProvider(create: (context) => CartCubit(ApiServices())..fetchCart()),
-         BlocProvider(create: (_) => FavCubit()..loadFavourites()),
+         BlocProvider(create: (_) => FavCubit()),
       ],
       child: EcommerceApp(isLoggedIn: isLoggedIn),
     ),
